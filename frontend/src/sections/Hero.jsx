@@ -32,14 +32,7 @@ const Hero = () => {
         pointerEvents: 'none'
       }} />
 
-      <div className="container" style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
-        gap: '4rem',
-        alignItems: 'center',
-        position: 'relative',
-        zIndex: 10
-      }}>
+      <div className="container hero-grid">
         
         {/* Text Content */}
         <motion.div

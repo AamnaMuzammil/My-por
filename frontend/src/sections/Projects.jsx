@@ -25,11 +25,7 @@ const Projects = () => {
           </motion.p>
         </motion.div>
 
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
-          gap: '2.5rem' 
-        }}>
+        <div className="projects-grid">
           {projects.map((project, index) => (
             <motion.div
               key={project.id}

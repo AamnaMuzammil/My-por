@@ -34,12 +34,12 @@ const About = () => {
       <div className="container">
         
         {/* Animated Header */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '3rem', marginBottom: '5rem', alignItems: 'flex-start' }}>
+        <div className="about-header">
           <motion.div 
             initial={{ x: -50, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.5 }}
-            style={{ flex: '1 1 250px' }}
+            className="about-header-left"
           >
              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-cyan)', marginBottom: '1.5rem', fontWeight: 700, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                 <span style={{ fontSize: '0.6rem' }}>●</span> About Me
@@ -53,9 +53,9 @@ const About = () => {
             initial={{ x: 50, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.5 }}
-            style={{ flex: '2 1 500px' }}
+            className="about-header-right"
           >
-            <h2 className="premium-title" style={{ fontSize: '3.5rem', marginBottom: '1.5rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--text-main)' }}>
+            <h2 className="premium-title" style={{ marginBottom: '1.5rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--text-main)' }}>
               My Journey
             </h2>
             <p style={{ fontSize: '1.25rem', lineHeight: 1.7, fontWeight: 400, color: 'var(--text-secondary)' }}>
@@ -78,27 +78,13 @@ const About = () => {
                 boxShadow: `0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px ${item.color}15`,
                 borderColor: `${item.color}55`
               }}
+              className="journey-card"
               style={{
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '16px',
-                padding: '2.5rem',
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '2rem',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                cursor: 'pointer',
-                backgroundColor: 'rgba(25, 20, 38, 0.45)',
-                backdropFilter: 'blur(16px)',
-                color: '#ffffff',
-                borderLeft: `5px solid ${item.color}`,
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-                transition: 'all 0.3s ease',
-                position: 'relative'
+                borderLeftColor: item.color
               }}
             >
               
-              <div style={{ flex: '1 1 600px' }}>
+              <div className="journey-card-content">
                 <p style={{ 
                   color: item.color,
                   fontSize: '0.75rem', 
@@ -119,19 +105,9 @@ const About = () => {
               
               <motion.div 
                 whileHover={{ scale: 1.1 }}
+                className="journey-card-arrow"
                 style={{ 
-                  width: '50px', 
-                  height: '50px', 
-                  borderRadius: '50%', 
-                  backgroundColor: 'rgba(255, 255, 255, 0.03)', 
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center',
-                  color: item.color, 
-                  fontSize: '1.2rem',
-                  transition: 'all 0.3s ease',
-                  zIndex: 5
+                  color: item.color
                 }}
               >
                 <FiArrowRight />

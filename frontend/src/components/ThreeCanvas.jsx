@@ -139,11 +139,22 @@ const CinematicCamera = ({ scrollY }) => {
 
 const ThreeCanvas = () => {
   const scrollY = useRef(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
     const onScroll = () => { scrollY.current = window.scrollY; };
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('scroll', onScroll);
+    };
   }, []);
 
   return (
@@ -156,15 +167,17 @@ const ThreeCanvas = () => {
       pointerEvents: 'none',
       background: 'radial-gradient(ellipse at 30% 20%, #12082a 0%, #030206 60%, #030206 100%)'
     }}>
-      <Canvas camera={{ position: [0, 0, 1], fov: 75 }}>
-        <ambientLight intensity={1.5} />
-        <pointLight position={[10, 10, 10]} intensity={2} />
-        <pointLight position={[-10, -10, -10]} intensity={1.5} color="#ff7eb3" />
-        <directionalLight position={[0, 5, 5]} intensity={1.5} color="#00ffd5" />
-        <CinematicCamera scrollY={scrollY} />
-        <ParticleField scrollY={scrollY} />
-        <FloatingShapes scrollY={scrollY} />
-      </Canvas>
+      {!isMobile && (
+        <Canvas camera={{ position: [0, 0, 1], fov: 75 }}>
+          <ambientLight intensity={1.5} />
+          <pointLight position={[10, 10, 10]} intensity={2} />
+          <pointLight position={[-10, -10, -10]} intensity={1.5} color="#ff7eb3" />
+          <directionalLight position={[0, 5, 5]} intensity={1.5} color="#00ffd5" />
+          <CinematicCamera scrollY={scrollY} />
+          <ParticleField scrollY={scrollY} />
+          <FloatingShapes scrollY={scrollY} />
+        </Canvas>
+      )}
     </div>
   );
 };

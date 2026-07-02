@@ -90,7 +90,7 @@ const Contact = () => {
           </motion.p>
         </motion.div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '4rem', alignItems: 'center' }}>
+        <div className="contact-grid">
           
           {/* Contact Info Premium Glass */}
           <motion.div
@@ -151,15 +151,7 @@ const Contact = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            style={{ 
-              padding: '3rem 2.5rem', 
-              borderRadius: '20px',
-              background: 'rgba(25, 20, 38, 0.45)',
-              backdropFilter: 'blur(16px)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              boxShadow: '0 15px 35px rgba(0, 0, 0, 0.3)',
-              position: 'relative'
-            }}
+            className="contact-form-container"
           >
             <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }} onSubmit={handleSubmit}>
               <div>
