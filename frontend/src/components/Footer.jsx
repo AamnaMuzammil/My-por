@@ -50,14 +50,7 @@ const Footer = () => {
 
       <div className="container" style={{ paddingTop: '5rem', paddingBottom: '3rem' }}>
 
-        {/* Top row: name + nav */}
-        <div style={{
-          display: 'flex', flexWrap: 'wrap', gap: '3rem',
-          justifyContent: 'space-between', alignItems: 'flex-start',
-          marginBottom: '4rem',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
-          paddingBottom: '4rem'
-        }}>
+        <div className="footer-row">
           {/* Brand */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

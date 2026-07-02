@@ -139,7 +139,7 @@ const CinematicCamera = ({ scrollY }) => {
 
 const ThreeCanvas = () => {
   const scrollY = useRef(0);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth <= 768 : false);
 
   useEffect(() => {
     const checkMobile = () => {

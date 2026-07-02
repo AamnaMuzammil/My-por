@@ -15,7 +15,7 @@ import Lenis from 'lenis';
 // This creates the "video / cinematic camera pull" feeling.
 const ParallaxSection = ({ children, offset = 60 }) => {
   const ref = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth <= 768 : false);
 
   useEffect(() => {
     const checkMobile = () => {

@@ -1,7 +1,18 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { personalInfo } from '../data/content';
 
 const Hero = () => {
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth <= 768 : false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <section className="section-padding" style={{ 
       minHeight: '100vh', 
@@ -109,11 +120,11 @@ const Hero = () => {
           style={{ display: 'flex', justifyContent: 'center', position: 'relative', perspective: 1000 }}
         >
           <motion.div 
-            animate={{ 
+            animate={isMobile ? {} : { 
               y: [-15, 15, -15],
               rotate: [-1, 1, -1]
             }}
-            transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }}
+            transition={isMobile ? {} : { repeat: Infinity, duration: 6, ease: 'easeInOut' }}
             style={{
               position: 'relative',
               width: '100%',
@@ -122,7 +133,7 @@ const Hero = () => {
               borderRadius: '50% 50% 40% 40%',
               background: 'radial-gradient(circle, rgba(157, 0, 255, 0.15) 0%, rgba(255, 126, 179, 0.05) 70%)',
               border: '1px solid rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(20px)',
+              backdropFilter: isMobile ? 'none' : 'blur(20px)',
               boxShadow: '0 30px 60px rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(255, 255, 255, 0.02)',
               display: 'flex',
               alignItems: 'center',

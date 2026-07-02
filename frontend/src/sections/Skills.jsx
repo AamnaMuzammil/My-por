@@ -17,8 +17,6 @@ const Skills = () => {
             My Skills
           </h2>
           <motion.p 
-            animate={{ y: [-3, 3, -3] }} 
-            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
             style={{ color: 'var(--text-secondary)', marginTop: '2rem', fontSize: '1.2rem', fontWeight: 600, letterSpacing: '0.05em' }}
           >
             Technologies I build with daily ⚡
