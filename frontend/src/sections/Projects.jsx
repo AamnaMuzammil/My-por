@@ -4,24 +4,24 @@ import ProjectCard from '../components/ProjectCard';
 
 const Projects = () => {
   return (
-    <section id="projects" className="section-padding" style={{ background: 'var(--bg-secondary)' }}>
+    <section id="projects" className="section-padding" style={{ background: 'rgba(13, 11, 20, 0.45)', backdropFilter: 'blur(5px)' }}>
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          style={{ textAlign: 'center', marginBottom: '4rem' }}
+          style={{ textAlign: 'center', marginBottom: '5rem' }}
         >
-          <h2 className="cartoon-title" style={{ boxShadow: '6px 6px 0px #ffd166', textShadow: '3px 3px 0px #ffd166' }}>
+          <h2 className="premium-title">
             Featured Projects
           </h2>
           <motion.p 
-            animate={{ rotate: [-1, 1, -1] }} 
-            transition={{ repeat: Infinity, duration: 4 }}
-            style={{ color: 'var(--text-secondary)', marginTop: '2rem', fontSize: '1.2rem', fontWeight: 700 }}
+            animate={{ y: [-5, 5, -5] }} 
+            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+            style={{ color: 'var(--text-secondary)', marginTop: '2rem', fontSize: '1.2rem', fontWeight: 600, letterSpacing: '0.05em' }}
           >
-            Some of my recent work 🚀
+            Sleekly crafted digital solutions 🌌
           </motion.p>
         </motion.div>
 

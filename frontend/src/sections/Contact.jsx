@@ -10,34 +10,64 @@ const Contact = () => {
     event.preventDefault();
     setStatus('Sending... ⏳');
     
-    // We are switching to Web3Forms because Google App Passwords are too strict!
     const formToSubmit = new FormData(event.target);
-    
-    // PUT YOUR WEB3FORMS ACCESS KEY HERE 👇
-    formToSubmit.append("access_key", "00bda0c2-e833-4d6c-b43b-e32effd128b6");
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formToSubmit
-      });
+    if (backendUrl) {
+      // Use Custom Express Backend API
+      try {
+        const payload = {
+          name: formToSubmit.get('name'),
+          email: formToSubmit.get('email'),
+          message: formToSubmit.get('message')
+        };
+        const response = await fetch(`${backendUrl}/api/contact`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (data.success) {
-        setStatus('Message sent successfully! 🚀');
-        event.target.reset(); // clear form
-      } else {
-        setStatus('Failed to send message. Check Access Key. 😢');
+        if (response.ok && data.success) {
+          setStatus('Message sent successfully! 🚀');
+          event.target.reset();
+        } else {
+          setStatus(`Failed to send message: ${data.error || 'Server error'} 😢`);
+        }
+      } catch (error) {
+        console.error(error);
+        setStatus('Error connecting to backend server. 😢');
       }
-    } catch (error) {
-      console.error(error);
-      setStatus('Error connecting to server. 😢');
+    } else {
+      // Fallback to Web3Forms
+      formToSubmit.append("access_key", "00bda0c2-e833-4d6c-b43b-e32effd128b6");
+
+      try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: formToSubmit
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          setStatus('Message sent successfully! 🚀');
+          event.target.reset();
+        } else {
+          setStatus('Failed to send message. Check Access Key. 😢');
+        }
+      } catch (error) {
+        console.error(error);
+        setStatus('Error connecting to server. 😢');
+      }
     }
   };
 
   return (
-    <section id="contact" className="section-padding" style={{ background: 'var(--bg-secondary)', overflow: 'hidden' }}>
+    <section id="contact" className="section-padding" style={{ background: 'rgba(13, 11, 20, 0.45)', backdropFilter: 'blur(5px)', overflow: 'hidden' }}>
       <div className="container">
         
         {/* Animated Heading */}
@@ -48,21 +78,21 @@ const Contact = () => {
           transition={{ duration: 0.6 }}
           style={{ textAlign: 'center', marginBottom: '5rem' }}
         >
-          <h2 className="cartoon-title" style={{ boxShadow: '6px 6px 0px #118ab2', textShadow: '3px 3px 0px #118ab2' }}>
-            Get In Touch!
+          <h2 className="premium-title">
+            Get In Touch
           </h2>
           <motion.p 
-            animate={{ rotate: [1, -1, 1] }} 
-            transition={{ repeat: Infinity, duration: 4 }}
-            style={{ color: 'var(--text-secondary)', marginTop: '2rem', fontSize: '1.2rem', fontWeight: 700 }}
+            animate={{ y: [-3, 3, -3] }} 
+            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+            style={{ color: 'var(--text-secondary)', marginTop: '2rem', fontSize: '1.2rem', fontWeight: 600, letterSpacing: '0.05em' }}
           >
-            I'd love to hear from you. Drop me a line! 👇
+            I'd love to hear from you. Drop me a line! ✉️
           </motion.p>
         </motion.div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '4rem', alignItems: 'center' }}>
           
-          {/* Contact Info Neo-Brutalist */}
+          {/* Contact Info Premium Glass */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -72,141 +102,144 @@ const Contact = () => {
           >
             {/* Email */}
             <motion.div 
-              whileHover={{ scale: 1.05, rotate: -2, x: 10 }}
+              whileHover={{ scale: 1.02, x: 5 }}
               style={{
                 display: 'flex', alignItems: 'center', gap: '1.5rem',
-                background: 'var(--bg-main)', padding: '1.5rem',
-                borderRadius: '16px', border: '3px solid #ff7eb3',
-                boxShadow: '6px 6px 0px #ff7eb3',
-                cursor: 'pointer'
+                background: 'rgba(25, 20, 38, 0.45)', padding: '1.5rem',
+                borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderLeft: '4px solid var(--accent-pink)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
               }}
             >
-              <div style={{ background: '#ff7eb3', padding: '1rem', borderRadius: '12px', color: '#1a1a1a', border: '2px solid var(--text-main)' }}>
-                <Mail size={32} />
+              <div style={{ background: 'rgba(255, 126, 179, 0.1)', padding: '0.8rem', borderRadius: '12px', color: 'var(--accent-pink)', border: '1px solid rgba(255, 126, 179, 0.2)' }}>
+                <Mail size={24} />
               </div>
               <div>
-                <h4 style={{ fontSize: '1.2rem', fontWeight: 800, textTransform: 'uppercase', color: '#ff7eb3' }}>Email</h4>
-                <p style={{ fontSize: '1.1rem', fontWeight: 600 }}>{personalInfo.email}</p>
+                <h4 style={{ fontSize: '0.9rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-secondary)', letterSpacing: '0.05em' }}>Email</h4>
+                <p style={{ fontSize: '1.05rem', fontWeight: 600, color: '#ffffff', marginTop: '0.2rem' }}>{personalInfo.email}</p>
               </div>
             </motion.div>
 
             {/* Location */}
             <motion.div 
-              whileHover={{ scale: 1.05, rotate: -2, x: 10 }}
+              whileHover={{ scale: 1.02, x: 5 }}
               style={{
                 display: 'flex', alignItems: 'center', gap: '1.5rem',
-                background: 'var(--bg-main)', padding: '1.5rem',
-                borderRadius: '16px', border: '3px solid #06d6a0',
-                boxShadow: '6px 6px 0px #06d6a0',
-                cursor: 'pointer'
+                background: 'rgba(25, 20, 38, 0.45)', padding: '1.5rem',
+                borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderLeft: '4px solid var(--accent-cyan)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
               }}
             >
-              <div style={{ background: '#06d6a0', padding: '1rem', borderRadius: '12px', color: '#1a1a1a', border: '2px solid var(--text-main)' }}>
-                <MapPin size={32} />
+              <div style={{ background: 'rgba(0, 255, 213, 0.1)', padding: '0.8rem', borderRadius: '12px', color: 'var(--accent-cyan)', border: '1px solid rgba(0, 255, 213, 0.2)' }}>
+                <MapPin size={24} />
               </div>
               <div>
-                <h4 style={{ fontSize: '1.2rem', fontWeight: 800, textTransform: 'uppercase', color: '#06d6a0' }}>Location</h4>
-                <p style={{ fontSize: '1.1rem', fontWeight: 600 }}>Karachi, Pakistan</p>
+                <h4 style={{ fontSize: '0.9rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-secondary)', letterSpacing: '0.05em' }}>Location</h4>
+                <p style={{ fontSize: '1.05rem', fontWeight: 600, color: '#ffffff', marginTop: '0.2rem' }}>Karachi, Pakistan</p>
               </div>
             </motion.div>
           </motion.div>
 
-          {/* Contact Form Neo-Brutalist */}
+          {/* Contact Form Premium Glass */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            whileHover={{ y: -5 }}
             style={{ 
               padding: '3rem 2.5rem', 
-              borderRadius: '24px',
-              background: 'var(--bg-main)',
-              border: '4px solid #118ab2',
-              boxShadow: '10px 10px 0px #118ab2',
+              borderRadius: '20px',
+              background: 'rgba(25, 20, 38, 0.45)',
+              backdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              boxShadow: '0 15px 35px rgba(0, 0, 0, 0.3)',
               position: 'relative'
             }}
           >
-            {/* Small decorative elements */}
-            <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 10, ease: "linear" }} style={{ position: 'absolute', top: '-20px', right: '-20px', fontSize: '3rem' }}>✨</motion.div>
-
             <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }} onSubmit={handleSubmit}>
               <div>
-                <label style={{ display: 'block', marginBottom: '0.8rem', fontWeight: 800, color: 'var(--text-main)', fontSize: '1.1rem' }}>YOUR NAME</label>
+                <label style={{ display: 'block', marginBottom: '0.6rem', fontWeight: 600, color: 'var(--text-secondary)', fontSize: '0.85rem', letterSpacing: '0.05em' }}>YOUR NAME</label>
                 <input 
                   type="text" 
                   name="name"
                   placeholder="John Doe"
                   required 
                   style={{ 
-                    width: '100%', padding: '1rem', borderRadius: '12px', 
-                    border: '3px solid var(--text-main)', background: 'var(--bg-secondary)', 
+                    width: '100%', padding: '0.9rem 1.2rem', borderRadius: '50px', 
+                    border: '1px solid rgba(255, 255, 255, 0.08)', background: 'rgba(255, 255, 255, 0.02)', 
                     color: 'var(--text-main)', outline: 'none', fontFamily: 'inherit',
-                    fontSize: '1.1rem', fontWeight: 600,
+                    fontSize: '0.95rem', fontWeight: 500,
                     transition: 'all 0.3s'
                   }} 
-                  onFocus={(e) => { e.target.style.boxShadow = '4px 4px 0px #ff7eb3'; e.target.style.borderColor = '#ff7eb3'; }}
-                  onBlur={(e) => { e.target.style.boxShadow = 'none'; e.target.style.borderColor = 'var(--text-main)'; }}
+                  onFocus={(e) => { e.target.style.boxShadow = '0 0 15px rgba(255, 126, 179, 0.15)'; e.target.style.borderColor = 'var(--accent-pink)'; }}
+                  onBlur={(e) => { e.target.style.boxShadow = 'none'; e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)'; }}
                 />
               </div>
               
               <div>
-                <label style={{ display: 'block', marginBottom: '0.8rem', fontWeight: 800, color: 'var(--text-main)', fontSize: '1.1rem' }}>YOUR EMAIL</label>
+                <label style={{ display: 'block', marginBottom: '0.6rem', fontWeight: 600, color: 'var(--text-secondary)', fontSize: '0.85rem', letterSpacing: '0.05em' }}>YOUR EMAIL</label>
                 <input 
                   type="email" 
                   name="email"
                   placeholder="john@example.com"
                   required 
                   style={{ 
-                    width: '100%', padding: '1rem', borderRadius: '12px', 
-                    border: '3px solid var(--text-main)', background: 'var(--bg-secondary)', 
+                    width: '100%', padding: '0.9rem 1.2rem', borderRadius: '50px', 
+                    border: '1px solid rgba(255, 255, 255, 0.08)', background: 'rgba(255, 255, 255, 0.02)', 
                     color: 'var(--text-main)', outline: 'none', fontFamily: 'inherit',
-                    fontSize: '1.1rem', fontWeight: 600,
+                    fontSize: '0.95rem', fontWeight: 500,
                     transition: 'all 0.3s'
                   }} 
-                  onFocus={(e) => { e.target.style.boxShadow = '4px 4px 0px #ffd166'; e.target.style.borderColor = '#ffd166'; }}
-                  onBlur={(e) => { e.target.style.boxShadow = 'none'; e.target.style.borderColor = 'var(--text-main)'; }}
+                  onFocus={(e) => { e.target.style.boxShadow = '0 0 15px rgba(0, 255, 213, 0.15)'; e.target.style.borderColor = 'var(--accent-cyan)'; }}
+                  onBlur={(e) => { e.target.style.boxShadow = 'none'; e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)'; }}
                 />
               </div>
 
               <div>
-                <label style={{ display: 'block', marginBottom: '0.8rem', fontWeight: 800, color: 'var(--text-main)', fontSize: '1.1rem' }}>MESSAGE</label>
+                <label style={{ display: 'block', marginBottom: '0.6rem', fontWeight: 600, color: 'var(--text-secondary)', fontSize: '0.85rem', letterSpacing: '0.05em' }}>MESSAGE</label>
                 <textarea 
                   rows="4" 
                   name="message"
                   placeholder="Hey Amna, let's work together!"
                   required 
                   style={{ 
-                    width: '100%', padding: '1rem', borderRadius: '12px', 
-                    border: '3px solid var(--text-main)', background: 'var(--bg-secondary)', 
+                    width: '100%', padding: '1rem 1.2rem', borderRadius: '16px', 
+                    border: '1px solid rgba(255, 255, 255, 0.08)', background: 'rgba(255, 255, 255, 0.02)', 
                     color: 'var(--text-main)', outline: 'none', fontFamily: 'inherit', resize: 'vertical',
-                    fontSize: '1.1rem', fontWeight: 600,
+                    fontSize: '0.95rem', fontWeight: 500,
                     transition: 'all 0.3s'
                   }}
-                  onFocus={(e) => { e.target.style.boxShadow = '4px 4px 0px #06d6a0'; e.target.style.borderColor = '#06d6a0'; }}
-                  onBlur={(e) => { e.target.style.boxShadow = 'none'; e.target.style.borderColor = 'var(--text-main)'; }}
+                  onFocus={(e) => { e.target.style.boxShadow = '0 0 15px rgba(157, 0, 255, 0.15)'; e.target.style.borderColor = 'var(--accent-purple)'; }}
+                  onBlur={(e) => { e.target.style.boxShadow = 'none'; e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)'; }}
                 ></textarea>
               </div>
 
               <motion.button 
-                whileHover={{ scale: 1.05, rotate: -1 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 type="submit" 
+                className="btn btn-primary"
                 style={{ 
-                  width: '100%', marginTop: '1rem', padding: '1.2rem',
-                  background: '#118ab2', color: '#fff', border: '3px solid var(--text-main)',
-                  borderRadius: '12px', fontSize: '1.2rem', fontWeight: 800,
+                  width: '100%', marginTop: '1rem', padding: '1rem',
+                  color: '#0d0b14', border: 'none',
+                  borderRadius: '50px', fontSize: '1rem', fontWeight: 800,
                   textTransform: 'uppercase', cursor: 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.8rem',
-                  boxShadow: '4px 4px 0px var(--text-main)'
+                  boxShadow: '0 5px 15px rgba(255, 126, 179, 0.3)',
+                  background: 'var(--accent-gradient)'
                 }}
               >
-                Send Message <Send size={24} />
+                Send Message <Send size={18} />
               </motion.button>
               
               {/* Status Message */}
               {status && (
-                <div style={{ marginTop: '1rem', textAlign: 'center', fontWeight: 800, fontSize: '1.1rem', color: status.includes('success') ? '#06d6a0' : '#ff7eb3' }}>
+                <div style={{ marginTop: '1rem', textAlign: 'center', fontWeight: 600, fontSize: '0.95rem', color: status.includes('success') ? 'var(--accent-cyan)' : 'var(--accent-pink)' }}>
                   {status}
                 </div>
               )}

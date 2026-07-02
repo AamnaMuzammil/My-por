@@ -28,54 +28,58 @@ const Navbar = ({ theme, toggleTheme }) => {
       <motion.nav
         initial={{ y: -150 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.8, type: 'spring', bounce: 0.5 }}
+        transition={{ duration: 0.8, type: 'spring', bounce: 0.2 }}
         style={{
           width: '100%',
-          maxWidth: '1200px',
-          padding: '0.8rem 1.5rem',
+          maxWidth: '1100px',
+          padding: '0.8rem 2rem',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          flexWrap: 'wrap', // Prevents overflow if screen is too small
+          flexWrap: 'wrap',
           gap: '1rem',
-          background: scrolled ? 'var(--bg-main)' : 'var(--bg-secondary)',
-          border: '4px solid var(--text-main)',
-          borderRadius: '24px',
-          boxShadow: scrolled ? '8px 8px 0px #ff7eb3' : '8px 8px 0px #06d6a0',
-          transition: 'background 0.3s ease, box-shadow 0.3s ease'
+          background: scrolled ? 'rgba(13, 11, 20, 0.8)' : 'rgba(25, 20, 38, 0.4)',
+          backdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          borderRadius: '50px',
+          boxShadow: scrolled ? '0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 126, 179, 0.08)' : '0 8px 32px rgba(0, 0, 0, 0.1)',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
         }}
       >
         <motion.div 
-          whileHover={{ rotate: 5, scale: 1.05 }}
+          whileHover={{ scale: 1.03 }}
           style={{ 
-            fontWeight: '800', fontSize: '1.5rem', fontFamily: 'Outfit', 
+            fontWeight: '800', fontSize: '1.4rem', fontFamily: 'Outfit', 
             cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem',
-            textTransform: 'uppercase'
+            letterSpacing: '-0.02em', color: '#ffffff'
           }}
         >
-          <motion.span animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 2 }}>🌸</motion.span> 
+          <span style={{ color: 'var(--accent-pink)', fontSize: '1rem' }}>●</span> 
           {personalInfo.name.split(' ')[0]}
         </motion.div>
         
-        <ul style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <ul style={{ display: 'flex', gap: '1.8rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
           {['About', 'Skills', 'Projects', 'Contact'].map((item) => (
             <motion.li 
               key={item} 
-              whileHover={{ y: -3, scale: 1.1, rotate: Math.random() > 0.5 ? 5 : -5 }}
-              transition={{ type: 'spring', bounce: 0.6 }}
+              whileHover={{ y: -2, scale: 1.05 }}
+              transition={{ type: 'spring', stiffness: 400 }}
             >
               <a href={`#${item.toLowerCase()}`} style={{ 
-                fontWeight: 800, 
-                color: 'var(--text-main)', 
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
-                fontSize: '0.9rem'
-              }}>
+                fontWeight: 600, 
+                color: 'var(--text-secondary)', 
+                letterSpacing: '0.05em',
+                fontSize: '0.85rem',
+                transition: 'color 0.2s ease'
+              }}
+              onMouseOver={e => e.currentTarget.style.color = '#ffffff'}
+              onMouseOut={e => e.currentTarget.style.color = 'var(--text-secondary)'}
+              >
                 {item}
               </a>
             </motion.li>
           ))}
-          <motion.li whileHover={{ scale: 1.2, rotate: 15 }} transition={{ type: 'spring', bounce: 0.5 }}>
+          <motion.li whileHover={{ scale: 1.1 }} transition={{ type: 'spring', stiffness: 400 }}>
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
           </motion.li>
         </ul>

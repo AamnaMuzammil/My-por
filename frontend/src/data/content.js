@@ -1,7 +1,10 @@
 import avatarImg from '../assets/images/avatar_3d_1776797311303.png';
-import glowCartImg from '../assets/images/project_glowcart_1776797328831.png';
-import abcSchoolImg from '../assets/images/project_abcschool_1776797343342.png';
-import primeOfficeImg from '../assets/images/project_primeoffice_1776797476785.png';
+import primeOfficeImg from '../assets/images/prime_office_mockup_1779359220803.png';
+import glowCartMockup from '../assets/images/glow_cart_mockup_1779359263693.png';
+import aiCulinaryMockup from '../assets/images/ai_culinary_mockup_1779359833506.png';
+import aiHandGestureMockup from '../assets/images/ai_hand_gesture_mockup_1779359848156.png';
+import travelBlogMockup from '../assets/images/travel_blog_mockup_1779359965871.png';
+import portfolioMockup from '../assets/images/portfolio_mockup_1779360019787.png';
 
 export const personalInfo = {
   name: "Amna Muzammil",
@@ -9,7 +12,7 @@ export const personalInfo = {
   tagline: "I build responsive, dynamic, and user-focused web applications",
   email: "amnamuzammil131@gmail.com",
   github: "https://github.com/AamnaMuzammil",
-  linkedin: "https://linkedin.com/in/amnamuzammmil",
+  linkedin: "https://www.linkedin.com/in/amna-muzammil/",
   avatar: avatarImg
 };
 
@@ -38,29 +41,62 @@ export const skills = {
 export const projects = [
   {
     id: 1,
-    title: "Glow Cart – All in One",
-    description: "Beauty e-commerce website with personalized product suggestions based on skin/hair type. Includes a comprehensive cart system and an admin panel for management.",
-    technologies: ["HTML", "CSS", "JS", "PHP", "MySQL"],
-    image: glowCartImg,
-    github: "https://github.com/AamnaMuzammil/Glowcart",
-    demo: "#"
+    title: "Prime Office Products",
+    description: "A corporate business website with product listings for office desks, chairs, and stationary. Features a clean and modern UI.",
+    technologies: ["React", "Node.js", "MongoDB", "Express"],
+    image: primeOfficeImg,
+    github: "https://github.com/AamnaMuzammil/ECOMAMNA-PRIME-OFFICE-FRONTEND",
+    demo: "https://ecomamna-prime-office-frontend.vercel.app/",
+    clickUrl: "https://ecomamna-prime-office-frontend.vercel.app/"
   },
   {
     id: 2,
-    title: "ABC School Website",
-    description: "A responsive and animated multi-page site designed for an educational institution. Includes sections for About, Achievements, and Contact.",
-    technologies: ["HTML", "CSS", "JS", "Bootstrap"],
-    image: abcSchoolImg,
-    github: "#",
-    demo: "#"
+    title: "Glow Cart – All in One",
+    description: "Beauty e-commerce website with personalized product suggestions based on skin/hair type.",
+    technologies: ["HTML", "CSS", "JS", "PHP", "MySQL"],
+    image: glowCartMockup,
+    github: "https://github.com/AamnaMuzammil/Glowcart",
+    demo: "https://github.com/AamnaMuzammil/Glowcart",
+    clickUrl: "https://github.com/AamnaMuzammil/Glowcart"
   },
   {
     id: 3,
-    title: "Prime Office Products Website",
-    description: "A corporate business website with product listings for office desks, chairs, and stationary. Features a clean and modern UI.",
+    title: "AI Culinary",
+    description: "AI-powered culinary application.",
+    technologies: ["React", "AI"],
+    image: aiCulinaryMockup,
+    github: "https://github.com/AamnaMuzammil/AI-culinary",
+    demo: "https://github.com/AamnaMuzammil/AI-culinary",
+    clickUrl: "https://github.com/AamnaMuzammil/AI-culinary"
+  },
+  {
+    id: 4,
+    title: "AI Hand Gesture",
+    description: "Real-time spatial drawing interface with hand-tracking.",
+    technologies: ["Python", "OpenCV", "AI"],
+    image: aiHandGestureMockup,
+    github: "https://github.com/AamnaMuzammil/AI-hand-gesture",
+    demo: "https://github.com/AamnaMuzammil/AI-hand-gesture",
+    clickUrl: "https://github.com/AamnaMuzammil/AI-hand-gesture"
+  },
+  {
+    id: 5,
+    title: "Travel Blog Website",
+    description: "A responsive travel blog.",
     technologies: ["HTML", "CSS", "JS"],
-    image: primeOfficeImg,
-    github: "#",
-    demo: "#"
+    image: travelBlogMockup,
+    github: "https://github.com/AamnaMuzammil/Travel-blog-website",
+    demo: "https://github.com/AamnaMuzammil/Travel-blog-website",
+    clickUrl: "https://github.com/AamnaMuzammil/Travel-blog-website"
+  },
+  {
+    id: 6,
+    title: "My Portfolio",
+    description: "Personal portfolio website.",
+    technologies: ["React", "Framer Motion"],
+    image: portfolioMockup,
+    github: "https://github.com/AamnaMuzammil/My-por",
+    demo: "https://github.com/AamnaMuzammil/My-por",
+    clickUrl: "https://github.com/AamnaMuzammil/My-por"
   }
 ];

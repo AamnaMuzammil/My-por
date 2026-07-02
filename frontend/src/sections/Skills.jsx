@@ -11,17 +11,17 @@ const Skills = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          style={{ textAlign: 'center', marginBottom: '4rem' }}
+          style={{ textAlign: 'center', marginBottom: '5rem' }}
         >
-          <h2 className="cartoon-title" style={{ boxShadow: '6px 6px 0px #ff7eb3', textShadow: '3px 3px 0px #ff7eb3' }}>
+          <h2 className="premium-title" style={{ marginBottom: '1.5rem' }}>
             My Skills
           </h2>
           <motion.p 
-            animate={{ rotate: [1, -1, 1] }} 
-            transition={{ repeat: Infinity, duration: 4 }}
-            style={{ color: 'var(--text-secondary)', marginTop: '2rem', fontSize: '1.2rem', fontWeight: 700 }}
+            animate={{ y: [-3, 3, -3] }} 
+            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+            style={{ color: 'var(--text-secondary)', marginTop: '2rem', fontSize: '1.2rem', fontWeight: 600, letterSpacing: '0.05em' }}
           >
-            Technologies I've been working with recently ⚡
+            Technologies I build with daily ⚡
           </motion.p>
         </motion.div>
 

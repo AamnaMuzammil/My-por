@@ -3,7 +3,7 @@ import { experience } from '../data/content';
 
 const Experience = () => {
   return (
-    <section id="experience" className="section-padding">
+    <section id="experience" className="section-padding" style={{ background: 'rgba(13, 11, 20, 0.45)', backdropFilter: 'blur(5px)' }}>
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -12,10 +12,25 @@ const Hero = () => {
       overflow: 'hidden'
     }}>
       
-      {/* Floating Background Elements */}
-      <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 20, ease: "linear" }} style={{ position: 'absolute', top: '15%', left: '10%', fontSize: '4rem', opacity: 0.5 }}>⭐</motion.div>
-      <motion.div animate={{ y: [0, -30, 0] }} transition={{ repeat: Infinity, duration: 4 }} style={{ position: 'absolute', bottom: '20%', right: '15%', fontSize: '5rem', opacity: 0.5 }}>🚀</motion.div>
-      <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 3 }} style={{ position: 'absolute', top: '30%', right: '25%', width: '30px', height: '30px', borderRadius: '50%', background: '#ff7eb3', opacity: 0.5 }} />
+      {/* Dynamic Glowing Ambient Lights */}
+      <div style={{
+        position: 'absolute',
+        top: '20%',
+        left: '10%',
+        width: '300px',
+        height: '300px',
+        background: 'radial-gradient(circle, rgba(255, 126, 179, 0.15) 0%, transparent 70%)',
+        pointerEvents: 'none'
+      }} />
+      <div style={{
+        position: 'absolute',
+        bottom: '10%',
+        right: '10%',
+        width: '400px',
+        height: '400px',
+        background: 'radial-gradient(circle, rgba(0, 255, 213, 0.12) 0%, transparent 70%)',
+        pointerEvents: 'none'
+      }} />
 
       <div className="container" style={{ 
         display: 'grid', 
@@ -30,90 +45,102 @@ const Hero = () => {
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, type: 'spring' }}
+          transition={{ duration: 1, type: 'spring', bounce: 0.2 }}
         >
           <motion.div 
-            whileHover={{ rotate: -5, scale: 1.1 }}
+            whileHover={{ scale: 1.05 }}
             style={{ 
-              display: 'inline-block', background: '#ffd166', color: '#1a1a1a', 
-              padding: '0.5rem 1.5rem', borderRadius: '20px', fontWeight: 800, 
-              border: '3px solid var(--text-main)', boxShadow: '4px 4px 0px var(--text-main)',
-              marginBottom: '1.5rem', transform: 'rotate(-2deg)'
+              display: 'inline-flex', 
+              alignItems: 'center',
+              gap: '0.5rem',
+              background: 'rgba(255, 255, 255, 0.05)', 
+              color: 'rgba(255, 255, 255, 0.9)', 
+              padding: '0.5rem 1.2rem', 
+              borderRadius: '50px', 
+              fontWeight: 600, 
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
+              marginBottom: '1.5rem',
+              fontSize: '0.85rem',
+              letterSpacing: '0.05em'
             }}
           >
-            HELLO WORLD! 👋
+            <span style={{ color: 'var(--accent-cyan)' }}>●</span> HELLO WORLD! 👋
           </motion.div>
           
           <h1 style={{ 
-            fontSize: 'clamp(3.5rem, 8vw, 5rem)', 
-            fontWeight: 800, 
+            fontSize: 'clamp(3.5rem, 8vw, 5.5rem)', 
+            fontWeight: 900, 
             marginBottom: '1rem', 
-            lineHeight: 1,
-            textTransform: 'uppercase',
-            textShadow: '4px 4px 0px #ff7eb3',
-            WebkitTextStroke: '1px var(--text-main)'
+            lineHeight: 1.05,
+            letterSpacing: '-0.03em',
+            color: '#ffffff'
           }}>
-            {personalInfo.name}
+            I'm <span className="gradient-text">{personalInfo.name}</span>
           </h1>
           
           <h3 style={{ 
-            fontSize: 'clamp(1.5rem, 3vw, 2rem)', 
-            fontWeight: 800, 
+            fontSize: 'clamp(1.2rem, 3vw, 1.8rem)', 
+            fontWeight: 700, 
             marginBottom: '1.5rem',
-            color: '#06d6a0',
-            textTransform: 'uppercase',
+            color: 'var(--accent-cyan)',
+            letterSpacing: '-0.01em',
             fontFamily: 'Outfit'
           }}>
             {personalInfo.title}
           </h3>
           
           <p style={{ 
-            fontSize: '1.2rem', 
+            fontSize: '1.15rem', 
             color: 'var(--text-secondary)', 
-            marginBottom: '2.5rem', 
-            maxWidth: '500px', 
-            lineHeight: 1.6,
-            fontWeight: 600
+            marginBottom: '3rem', 
+            maxWidth: '520px', 
+            lineHeight: 1.7,
+            fontWeight: 400
           }}>
             {personalInfo.tagline}
           </p>
           
-          <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
-            <a href="#projects" className="btn btn-primary">View Projects</a>
-            <a href="#contact" className="btn btn-secondary" style={{ background: '#06d6a0' }}>Contact Me</a>
+          <div style={{ display: 'flex', gap: '1.2rem', flexWrap: 'wrap' }}>
+            <a href="#projects" className="btn btn-primary">Explore My Work</a>
+            <a href="#contact" className="btn btn-secondary">Get In Touch</a>
           </div>
         </motion.div>
 
         {/* Avatar/Image */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2, type: 'spring' }}
-          style={{ display: 'flex', justifyContent: 'center', position: 'relative' }}
+          initial={{ opacity: 0, scale: 0.9, rotateY: 20 }}
+          animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+          transition={{ duration: 1.2, delay: 0.2, type: 'spring' }}
+          style={{ display: 'flex', justifyContent: 'center', position: 'relative', perspective: 1000 }}
         >
           <motion.div 
-            animate={{ y: [-10, 10, -10] }}
-            transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
+            animate={{ 
+              y: [-15, 15, -15],
+              rotate: [-1, 1, -1]
+            }}
+            transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }}
             style={{
               position: 'relative',
               width: '100%',
-              maxWidth: '420px',
+              maxWidth: '380px',
               aspectRatio: '1',
-              borderRadius: '32px',
-              background: '#118ab2',
-              border: '6px solid var(--text-main)',
-              boxShadow: '15px 15px 0px #ff7eb3',
+              borderRadius: '50% 50% 40% 40%',
+              background: 'radial-gradient(circle, rgba(157, 0, 255, 0.15) 0%, rgba(255, 126, 179, 0.05) 70%)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(20px)',
+              boxShadow: '0 30px 60px rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(255, 255, 255, 0.02)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              overflow: 'hidden',
-              transform: 'rotate(2deg)'
+              overflow: 'hidden'
             }}
           >
             <img 
               src={personalInfo.avatar} 
               alt="Developer Avatar" 
-              style={{ width: '90%', height: '90%', objectFit: 'contain' }}
+              style={{ width: '85%', height: '85%', objectFit: 'contain', zIndex: 2 }}
             />
           </motion.div>
         </motion.div>
