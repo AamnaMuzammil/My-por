@@ -102,21 +102,23 @@ const Contact = () => {
             <motion.div 
               whileHover={{ scale: 1.02, x: 5 }}
               style={{
-                display: 'flex', alignItems: 'center', gap: '1.5rem',
-                background: 'rgba(25, 20, 38, 0.45)', padding: '1.5rem',
+                display: 'flex', alignItems: 'center', gap: '1rem',
+                background: 'rgba(25, 20, 38, 0.45)', padding: '1.2rem',
                 borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.08)',
                 borderLeft: '4px solid var(--accent-pink)',
                 boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
                 cursor: 'pointer',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                overflow: 'hidden',
+                minWidth: 0,
               }}
             >
               <div style={{ background: 'rgba(255, 126, 179, 0.1)', padding: '0.8rem', borderRadius: '12px', color: 'var(--accent-pink)', border: '1px solid rgba(255, 126, 179, 0.2)' }}>
                 <Mail size={24} />
               </div>
-              <div>
+              <div style={{ minWidth: 0, flex: 1, overflow: 'hidden' }}>
                 <h4 style={{ fontSize: '0.9rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-secondary)', letterSpacing: '0.05em' }}>Email</h4>
-                <p className="contact-info-text" style={{ fontSize: '1.05rem', fontWeight: 600, color: '#ffffff', marginTop: '0.2rem' }}>{personalInfo.email}</p>
+                <p className="contact-info-text" style={{ fontSize: '0.95rem', fontWeight: 600, color: '#ffffff', marginTop: '0.2rem', wordBreak: 'break-all', overflowWrap: 'break-word' }}>{personalInfo.email}</p>
               </div>
             </motion.div>
 

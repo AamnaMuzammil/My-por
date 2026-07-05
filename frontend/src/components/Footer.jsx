@@ -5,191 +5,204 @@ import { motion } from 'framer-motion';
 const Footer = () => {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  const navLinks = [
-    { label: 'About', href: '#about' },
-    { label: 'Skills', href: '#skills' },
-    { label: 'Projects', href: '#projects' },
-    { label: 'Contact', href: '#contact' },
-  ];
-
-  const socials = [
-    { icon: <FiGithub size={20} />, link: personalInfo.github, label: 'GitHub', color: '#ff7eb3' },
-    { icon: <FiLinkedin size={20} />, link: personalInfo.linkedin, label: 'LinkedIn', color: '#00ffd5' },
-    { icon: <FiMail size={20} />, link: `mailto:${personalInfo.email}`, label: 'Email', color: '#9d00ff' },
-  ];
-
   return (
     <footer style={{
       position: 'relative',
-      background: 'rgba(8, 6, 14, 0.85)',
+      background: 'rgba(8, 6, 14, 0.9)',
       backdropFilter: 'blur(20px)',
       borderTop: '1px solid rgba(255, 255, 255, 0.06)',
       overflow: 'hidden',
     }}>
       {/* Top gradient line */}
       <div style={{
-        position: 'absolute',
-        top: 0, left: 0, right: 0,
-        height: '1px',
+        position: 'absolute', top: 0, left: 0, right: 0, height: '1px',
         background: 'linear-gradient(90deg, transparent, #ff7eb3, #9d00ff, #00ffd5, transparent)',
       }} />
 
       {/* Ambient glow orbs */}
       <div style={{
-        position: 'absolute', bottom: '-60px', left: '10%',
+        position: 'absolute', top: '-80px', left: '5%',
         width: 'clamp(140px, 35vw, 300px)', height: 'clamp(140px, 35vw, 300px)',
         background: 'radial-gradient(circle, rgba(255,126,179,0.08) 0%, transparent 70%)',
-        pointerEvents: 'none',
-        borderRadius: '50%'
+        pointerEvents: 'none', borderRadius: '50%',
       }} />
       <div style={{
-        position: 'absolute', bottom: '-60px', right: '10%',
+        position: 'absolute', bottom: '-60px', right: '5%',
         width: 'clamp(140px, 35vw, 300px)', height: 'clamp(140px, 35vw, 300px)',
         background: 'radial-gradient(circle, rgba(0,255,213,0.06) 0%, transparent 70%)',
-        pointerEvents: 'none',
-        borderRadius: '50%'
+        pointerEvents: 'none', borderRadius: '50%',
       }} />
 
-      <div className="container" style={{ paddingTop: '5rem', paddingBottom: '3rem' }}>
+      <div className="container" style={{ padding: '4rem 2rem 2.5rem' }}>
 
-        <div className="footer-row">
-          {/* Brand */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            style={{ maxWidth: '320px' }}
-          >
-            <div style={{
+        {/* ── Big heading ── */}
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          style={{
+            fontSize: 'clamp(1.6rem, 5vw, 2.8rem)',
+            fontWeight: 900,
+            fontFamily: 'Outfit',
+            color: '#ffffff',
+            textAlign: 'center',
+            marginBottom: '2.5rem',
+            letterSpacing: '-0.02em',
+          }}
+        >
+          Let's Start Your{' '}
+          <span className="gradient-text">Creative Project</span>
+        </motion.h2>
+
+        {/* ── Big CTA Card ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.65, delay: 0.1 }}
+          className="footer-cta-card"
+        >
+          {/* Left: CTA text + button */}
+          <div className="footer-cta-left">
+            <h3 style={{
+              fontSize: 'clamp(1.3rem, 3.5vw, 2rem)',
+              fontWeight: 800,
               fontFamily: 'Outfit',
-              fontWeight: 900,
-              fontSize: '2rem',
-              letterSpacing: '-0.03em',
-              color: '#fff',
-              marginBottom: '1rem'
+              color: '#ffffff',
+              marginBottom: '1rem',
+              letterSpacing: '-0.02em',
+              lineHeight: 1.25,
             }}>
-              <span style={{ color: 'var(--accent-pink)' }}>●</span> {personalInfo.name.split(' ')[0]}
-            </div>
+              Ready to create something beautiful?
+            </h3>
             <p style={{
               color: 'var(--text-secondary)',
+              fontSize: '0.97rem',
               lineHeight: 1.7,
-              fontSize: '0.95rem',
-              fontWeight: 400
+              marginBottom: '1.8rem',
+              maxWidth: '380px',
             }}>
-              Software Engineering student & MERN Stack developer building sleek, performant digital experiences.
+              I am currently available for new projects. Let's connect to discuss your requirements and timelines.
             </p>
-
-            {/* Social icons */}
-            <div style={{ display: 'flex', gap: '0.8rem', marginTop: '2rem' }}>
-              {socials.map((s, i) => (
-                <motion.a
-                  key={i}
-                  href={s.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={s.label}
-                  whileHover={{ scale: 1.15, borderColor: s.color, color: s.color, boxShadow: `0 0 15px ${s.color}33` }}
-                  style={{
-                    width: '44px', height: '44px',
-                    borderRadius: '50%',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    background: 'rgba(255,255,255,0.03)',
-                    backdropFilter: 'blur(10px)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: 'var(--text-secondary)',
-                    transition: 'all 0.25s ease',
-                    cursor: 'pointer'
-                  }}
-                >
-                  {s.icon}
-                </motion.a>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Nav links */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '1.5rem' }}>
-              Navigation
-            </p>
-            <ul style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {navLinks.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    style={{ color: 'rgba(255,255,255,0.6)', fontWeight: 500, fontSize: '0.95rem', transition: 'color 0.2s ease' }}
-                    onMouseOver={e => e.currentTarget.style.color = '#fff'}
-                    onMouseOut={e => e.currentTarget.style.color = 'rgba(255,255,255,0.6)'}
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-
-          {/* CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            style={{ maxWidth: '260px' }}
-          >
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '1.5rem' }}>
-              Available For Work
-            </p>
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: '0.6rem',
-              marginBottom: '1.5rem'
-            }}>
-              <motion.span
-                animate={{ scale: [1, 1.4, 1], opacity: [1, 0.5, 1] }}
-                transition={{ repeat: Infinity, duration: 2 }}
-                style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#00ffd5', display: 'inline-block', flexShrink: 0 }}
-              />
-              <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Open to new opportunities</span>
-            </div>
             <a
               href="#contact"
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-                padding: '0.7rem 1.5rem', borderRadius: '50px',
-                background: 'linear-gradient(135deg, #ff7eb3, #9d00ff)',
-                color: '#fff', fontWeight: 700, fontSize: '0.85rem',
-                fontFamily: 'Outfit', cursor: 'pointer',
-                border: 'none', textDecoration: 'none',
-                boxShadow: '0 5px 20px rgba(255,126,179,0.3)',
-                transition: 'transform 0.2s ease, box-shadow 0.2s ease'
-              }}
-              onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(255,126,179,0.4)'; }}
-              onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 5px 20px rgba(255,126,179,0.3)'; }}
+              className="btn btn-primary"
+              style={{ fontSize: '0.9rem', padding: '0.75rem 1.8rem' }}
             >
-              Hire Me ✨
+              Send an Inquiry ✦
             </a>
-          </motion.div>
-        </div>
+          </div>
 
-        {/* Bottom row — uses .footer-bottom class for responsive stacking on mobile */}
-        <div className="footer-bottom">
-          <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.85rem', fontWeight: 400 }}>
+          {/* Divider */}
+          <div className="footer-cta-divider" />
+
+          {/* Right: Avatar + contact info */}
+          <div className="footer-cta-right">
+            {/* Avatar circle */}
+            <div style={{
+              width: '64px', height: '64px', borderRadius: '50%',
+              background: 'rgba(255,255,255,0.06)',
+              border: '2px solid rgba(255,255,255,0.12)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              overflow: 'hidden', marginBottom: '1rem',
+              flexShrink: 0,
+            }}>
+              <img
+                src={personalInfo.avatar}
+                alt={personalInfo.name}
+                style={{ width: '90%', height: '90%', objectFit: 'contain' }}
+              />
+            </div>
+
+            <div style={{ marginBottom: '1.4rem' }}>
+              <p style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff', marginBottom: '0.2rem' }}>
+                Say Hello 🔥
+              </p>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+                Let's build something epic.
+              </p>
+            </div>
+
+            {/* Quick links */}
+            <p style={{
+              fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase',
+              letterSpacing: '0.12em', color: 'var(--text-secondary)',
+              marginBottom: '0.9rem',
+            }}>
+              Quick Links
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+              {/* Email */}
+              <a
+                href={`mailto:${personalInfo.email}`}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '0.6rem',
+                  color: 'rgba(255,255,255,0.75)', fontSize: '0.88rem',
+                  fontWeight: 500, transition: 'color 0.2s ease',
+                  wordBreak: 'break-all', overflowWrap: 'break-word',
+                }}
+                onMouseOver={e => e.currentTarget.style.color = '#fff'}
+                onMouseOut={e => e.currentTarget.style.color = 'rgba(255,255,255,0.75)'}
+              >
+                <FiMail size={15} style={{ flexShrink: 0, color: 'var(--accent-pink)' }} />
+                {personalInfo.email}
+              </a>
+
+              {/* LinkedIn */}
+              <a
+                href={personalInfo.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '0.6rem',
+                  color: 'rgba(255,255,255,0.75)', fontSize: '0.88rem',
+                  fontWeight: 500, transition: 'color 0.2s ease',
+                }}
+                onMouseOver={e => e.currentTarget.style.color = '#fff'}
+                onMouseOut={e => e.currentTarget.style.color = 'rgba(255,255,255,0.75)'}
+              >
+                <FiLinkedin size={15} style={{ flexShrink: 0, color: 'var(--accent-cyan)' }} />
+                LinkedIn
+              </a>
+
+              {/* GitHub */}
+              <a
+                href={personalInfo.github}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '0.6rem',
+                  color: 'rgba(255,255,255,0.75)', fontSize: '0.88rem',
+                  fontWeight: 500, transition: 'color 0.2s ease',
+                }}
+                onMouseOver={e => e.currentTarget.style.color = '#fff'}
+                onMouseOut={e => e.currentTarget.style.color = 'rgba(255,255,255,0.75)'}
+              >
+                <FiGithub size={15} style={{ flexShrink: 0, color: 'var(--accent-purple)' }} />
+                Github
+              </a>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ── Bottom bar ── */}
+        <div className="footer-bottom" style={{ marginTop: '2rem' }}>
+          <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.82rem', fontWeight: 400 }}>
             © {new Date().getFullYear()} {personalInfo.name}. Built with React & Three.js
           </p>
           <motion.button
             onClick={scrollToTop}
-            whileHover={{ scale: 1.1, borderColor: 'var(--accent-pink)', color: 'var(--accent-pink)', boxShadow: '0 0 20px rgba(255,126,179,0.2)' }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.15, borderColor: 'var(--accent-cyan)', color: 'var(--accent-cyan)', boxShadow: '0 0 18px rgba(0,255,213,0.25)' }}
+            whileTap={{ scale: 0.93 }}
             style={{
-              width: '40px', height: '40px', borderRadius: '50%',
-              border: '1px solid rgba(255,255,255,0.1)',
-              background: 'rgba(255,255,255,0.03)',
+              width: '38px', height: '38px', borderRadius: '50%',
+              border: '1px solid rgba(255,255,255,0.12)',
+              background: 'rgba(0,255,213,0.08)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: 'rgba(255,255,255,0.4)',
-              cursor: 'pointer', transition: 'all 0.25s ease',
-              backdropFilter: 'blur(10px)'
+              color: 'var(--accent-cyan)', cursor: 'pointer',
+              transition: 'all 0.25s ease', backdropFilter: 'blur(10px)',
             }}
             aria-label="Scroll to top"
           >
