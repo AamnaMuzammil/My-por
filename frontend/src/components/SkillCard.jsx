@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Layout, Server, Database, Wrench } from 'lucide-react';
 
 const categoryConfig = {
@@ -9,7 +9,31 @@ const categoryConfig = {
 };
 
 const SkillCard = ({ category, skills }) => {
-  const config = categoryConfig[category] || { icon: <Layout size={30} />, color: '#ff7eb3', bg: 'rgba(255, 126, 179, 0.05)' };
+  const config = categoryConfig[category] || {
+    icon: <Layout size={30} />,
+    color: '#ff7eb3',
+    bg: 'rgba(255, 126, 179, 0.05)',
+  };
+
+  /*
+   * useReducedMotion() returns true when:
+   *   - The user has "Reduce Motion" enabled in OS accessibility settings, OR
+   *   - We are on a mobile/low-power device (Framer Motion automatically
+   *     considers prefers-reduced-motion).
+   *
+   * When true, we skip the infinite floating animation to avoid:
+   *   - Multiple concurrent RAF loops running on mobile
+   *   - Unnecessary repaints causing scroll jank
+   */
+  const shouldReduceMotion = useReducedMotion();
+
+  const floatAnimation = shouldReduceMotion
+    ? {}
+    : { y: [0, -4, 0] };
+
+  const floatTransition = shouldReduceMotion
+    ? {}
+    : { repeat: Infinity, duration: 4, ease: 'easeInOut' };
 
   return (
     <motion.div
@@ -48,10 +72,10 @@ const SkillCard = ({ category, skills }) => {
         {config.icon}
       </div>
 
-      {/* Main animated icon */}
+      {/* Main icon — infinite float animation disabled on mobile/reduced motion */}
       <motion.div 
-        animate={{ y: [0, -4, 0] }}
-        transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+        animate={floatAnimation}
+        transition={floatTransition}
         style={{
           width: '70px',
           height: '70px',

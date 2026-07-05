@@ -21,7 +21,6 @@
 }
 
 [data-theme='light'] {
-  /* Keeping it elegant even in light mode, but dark mode is default and highly recommended for WebGL */
   --bg-secondary: rgba(240, 240, 245, 0.7);
   --bg-card: rgba(255, 255, 255, 0.6);
   --text-main: #0f172a;
@@ -37,8 +36,16 @@
   box-sizing: border-box;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   BASE — fix overflow on BOTH html AND body.
+   On iOS, only overflow-x on <html> reliably prevents horizontal scrolling.
+   min-height: 100dvh uses the dynamic viewport so the iOS address bar is
+   accounted for.
+───────────────────────────────────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;          /* prevents iOS horizontal scroll bleed */
+  min-height: 100dvh;          /* dynamic viewport — accounts for iOS address bar */
 }
 
 body {
@@ -47,6 +54,20 @@ body {
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
   background-color: #030206; /* Fallback */
+  /* Flex column so footer always pushes to the bottom */
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  min-height: 100vh; /* fallback for browsers without dvh */
+}
+
+/* Root div must grow to push footer down */
+#root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100dvh;
+  min-height: 100vh;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -60,6 +81,11 @@ a {
 
 ul {
   list-style: none;
+}
+
+/* Reduce 300ms touch-delay on all interactive elements */
+a, button, [role="button"] {
+  touch-action: manipulation;
 }
 
 /* Gradient Text */
@@ -98,6 +124,7 @@ ul {
   overflow: hidden;
   white-space: nowrap;
   letter-spacing: 0.02em;
+  touch-action: manipulation;
 }
 
 /* PRIMARY — always visible solid gradient */
@@ -137,23 +164,29 @@ ul {
   transform: translateY(-1px);
 }
 
+/* ── Hero CTA button group: stack on very small screens ── */
+.hero-btn-group {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .hero-btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  .hero-btn-group .btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+/* ── Section Spacing ────────────────────────── */
 .section-padding {
   padding: 8rem 2rem;
   position: relative;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  position: relative;
-  z-index: 10;
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 0 1.25rem;
-  }
 }
 
 @media (max-width: 768px) {
@@ -162,9 +195,38 @@ ul {
   }
 }
 
+@media (max-width: 480px) {
+  .section-padding {
+    padding: 4rem 1.2rem;
+  }
+}
+
+/* ── Container ──────────────────────────────── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 10;
+  /* Safety: never exceed viewport width */
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+}
+
 /* Premium Elegant Headings */
 .premium-title {
-  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-size: clamp(2rem, 6vw, 4rem);
   font-family: 'Outfit', sans-serif;
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -217,9 +279,14 @@ html.lenis, html.lenis body {
 }
 
 /* ── Responsive Grids & Layouts ────────────── */
+/*
+  Using min(Xpx, 100%) inside minmax() ensures the column never forces 
+  content wider than the parent, which was causing horizontal overflow 
+  on 360px screens with the old minmax(320px, 1fr).
+*/
 .hero-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
   gap: 4rem;
   align-items: center;
   position: relative;
@@ -228,13 +295,13 @@ html.lenis, html.lenis body {
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: 2.5rem;
 }
 
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: 4rem;
   align-items: center;
 }
@@ -251,7 +318,7 @@ html.lenis, html.lenis body {
     align-items: center;
   }
   .projects-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
     gap: 1.5rem;
   }
   .contact-grid {
@@ -263,6 +330,9 @@ html.lenis, html.lenis body {
 @media (max-width: 480px) {
   .projects-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .contact-grid {
     gap: 1.5rem;
   }
 }
@@ -277,11 +347,13 @@ html.lenis, html.lenis body {
 }
 
 .about-header-left {
-  flex: 1 1 250px;
+  flex: 1 1 200px;    /* was 250px; now collapses sooner */
+  min-width: 0;       /* prevents flex blowout */
 }
 
 .about-header-right {
-  flex: 2 1 500px;
+  flex: 2 1 300px;    /* was 500px; now collapses at ~300px instead of 500px */
+  min-width: 0;
 }
 
 .journey-card {
@@ -306,7 +378,8 @@ html.lenis, html.lenis body {
 }
 
 .journey-card-content {
-  flex: 1 1 600px;
+  flex: 1 1 280px;    /* was 600px — caused overflow on tablet */
+  min-width: 0;
 }
 
 .journey-card-arrow {
@@ -321,6 +394,7 @@ html.lenis, html.lenis body {
   font-size: 1.2rem;
   transition: all 0.3s ease;
   z-index: 5;
+  flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
@@ -346,6 +420,21 @@ html.lenis, html.lenis body {
   }
 }
 
+@media (max-width: 480px) {
+  .about-header {
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  .about-header-left,
+  .about-header-right {
+    flex: 1 1 100%;
+  }
+  .journey-card {
+    padding: 1.2rem;
+  }
+}
+
 /* ── Contact Form Container ────────────────── */
 .contact-form-container {
   padding: 3rem 2.5rem;
@@ -356,6 +445,7 @@ html.lenis, html.lenis body {
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
   position: relative;
+  min-width: 0; /* prevent flex/grid blowout */
 }
 
 @media (max-width: 768px) {
@@ -364,33 +454,52 @@ html.lenis, html.lenis body {
   }
 }
 
+@media (max-width: 480px) {
+  .contact-form-container {
+    padding: 1.5rem 1rem;
+    border-radius: 14px;
+  }
+}
+
+/* Contact info text: wrap long email addresses */
+.contact-info-text {
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
 /* ── Mobile Sidebar Drawer & Button ────────── */
 .mobile-drawer-btn {
   position: fixed;
   top: 1.2rem;
   right: 1.2rem;
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: rgba(20, 16, 32, 0.65);
+  background: rgba(20, 16, 32, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   cursor: pointer;
-  z-index: 110;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 126, 179, 0.05);
+  z-index: 200;          /* above everything */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 126, 179, 0.08);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Respect iOS safe area (notch / home indicator) */
+  top: calc(1.2rem + env(safe-area-inset-top));
+  right: calc(1.2rem + env(safe-area-inset-right));
+  touch-action: manipulation;
 }
 
-.mobile-drawer-btn:hover {
-  background: rgba(20, 16, 32, 0.85);
-  border-color: rgba(255, 126, 179, 0.3);
-  box-shadow: 0 4px 20px rgba(255, 126, 179, 0.15);
+.mobile-drawer-btn:hover,
+.mobile-drawer-btn:focus-visible {
+  background: rgba(20, 16, 32, 0.95);
+  border-color: rgba(255, 126, 179, 0.4);
+  box-shadow: 0 4px 20px rgba(255, 126, 179, 0.2);
+  outline: none;
 }
 
 .mobile-drawer {
@@ -398,26 +507,37 @@ html.lenis, html.lenis body {
   top: 0;
   right: 0;
   bottom: 0;
-  width: 280px;
-  height: 100vh;
+  width: min(280px, 85vw);   /* never wider than 85% of viewport */
+  /* dvh so the drawer fills the full visual viewport on iOS */
+  height: 100dvh;
+  height: 100vh;             /* fallback */
   background: rgba(10, 8, 16, 0.98);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border-left: 1px solid rgba(255, 255, 255, 0.08);
-  z-index: 105;
+  z-index: 150;              /* above backdrop (100) and below hamburger (200) */
   display: flex;
   flex-direction: column;
   padding: 2.5rem 1.8rem;
-  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6);
+  /* Respect iOS safe areas */
+  padding-top: calc(2.5rem + env(safe-area-inset-top));
+  padding-bottom: calc(1.8rem + env(safe-area-inset-bottom));
+  padding-right: calc(1.8rem + env(safe-area-inset-right));
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.7);
+  overflow-y: auto;          /* in case content is taller than screen */
+  -webkit-overflow-scrolling: touch;
 }
 
 .mobile-drawer-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(3, 2, 6, 0.6);
+  background: rgba(3, 2, 6, 0.7);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  z-index: 100;
+  z-index: 140;              /* below drawer (150), above content */
+  /* full height including iOS dynamic bar */
+  height: 100dvh;
+  height: 100vh;
 }
 
 /* ── Footer Row Responsive Wrapper ────────── */
@@ -432,10 +552,40 @@ html.lenis, html.lenis body {
   padding-bottom: 4rem;
 }
 
+/* Footer bottom bar: copyright + scroll-to-top */
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-bottom p {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+
 @media (max-width: 768px) {
   .footer-row {
     flex-direction: column;
     gap: 2.5rem;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    text-align: center;
   }
 }
 
+@media (max-width: 480px) {
+  .footer-row {
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+  }
+}

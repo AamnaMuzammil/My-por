@@ -22,7 +22,7 @@ const ParallaxSection = ({ children, offset = 60 }) => {
       setIsMobile(window.innerWidth <= 768);
     };
     checkMobile();
-    window.addEventListener('resize', checkMobile);
+    window.addEventListener('resize', checkMobile, { passive: true });
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
@@ -106,14 +106,26 @@ function App() {
   };
 
   return (
-    <>
+    /*
+     * Layout wrapper: flex column + min-height fills the viewport so the
+     * Footer is always pushed to the bottom, even on short pages.
+     * Uses 100dvh (dynamic viewport height) with 100vh as a fallback so
+     * the iOS address bar is accounted for.
+     */
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: '100dvh',
+      minHeight: '100vh',
+    }}>
       {/* Fixed interactive 3D starfield — reacts to scroll */}
       <ThreeCanvas />
 
       {/* Floating pill navbar */}
       <Navbar theme={theme} toggleTheme={toggleTheme} />
 
-      <main>
+      {/* flex:1 so main grows to fill all space between navbar and footer */}
+      <main style={{ flex: 1 }}>
         {/* Hero — no parallax fade so it's always full-visible on load */}
         <Hero />
 
@@ -136,7 +148,7 @@ function App() {
       </main>
 
       <Footer />
-    </>
+    </div>
   );
 }
 

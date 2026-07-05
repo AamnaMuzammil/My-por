@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { personalInfo } from '../data/content';
 import ThemeToggle from './ThemeToggle';
@@ -6,14 +6,28 @@ import { FiMenu, FiX } from 'react-icons/fi';
 
 const Navbar = ({ theme, toggleTheme }) => {
   const [scrolled, setScrolled] = useState(false);
-  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth <= 768 : false);
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' ? window.innerWidth <= 768 : false
+  );
   const [isOpen, setIsOpen] = useState(false);
 
+  // ── Lock / unlock body scroll when mobile drawer is open ──────────────────
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    // Always clean up on unmount
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
+
+  // ── Event listeners — all passive to avoid scroll jank ───────────────────
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
-    
+
     const handleResize = () => {
       const mobile = window.innerWidth <= 768;
       setIsMobile(mobile);
@@ -22,21 +36,35 @@ const Navbar = ({ theme, toggleTheme }) => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleResize);
+    // Close drawer on Escape key
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    // { passive: true } eliminates scroll-blocking jank on mobile
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize, { passive: true });
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Run resize handler once on mount to sync state
     handleResize();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
+      document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [isOpen]);
+
+  const closeDrawer = useCallback(() => setIsOpen(false), []);
 
   const navItems = ['About', 'Skills', 'Projects', 'Contact'];
 
   return (
     <>
-      {/* Desktop Pill Navbar */}
+      {/* ── Desktop Pill Navbar ────────────────────────────────────────────── */}
       {!isMobile && (
         <div style={{ 
           position: 'fixed', 
@@ -63,7 +91,9 @@ const Navbar = ({ theme, toggleTheme }) => {
               backdropFilter: 'blur(16px)',
               border: '1px solid rgba(255, 255, 255, 0.08)',
               borderRadius: '50px',
-              boxShadow: scrolled ? '0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 126, 179, 0.08)' : '0 8px 32px rgba(0, 0, 0, 0.1)',
+              boxShadow: scrolled
+                ? '0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 126, 179, 0.08)'
+                : '0 8px 32px rgba(0, 0, 0, 0.1)',
               transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
             }}
           >
@@ -109,18 +139,31 @@ const Navbar = ({ theme, toggleTheme }) => {
         </div>
       )}
 
-      {/* Mobile Drawer Trigger Button */}
+      {/* ── Mobile Hamburger Button ─────────────────────────────────────────── */}
       {isMobile && (
         <button 
           className="mobile-drawer-btn"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle Navigation Drawer"
+          onClick={() => setIsOpen(prev => !prev)}
+          aria-label={isOpen ? 'Close Navigation' : 'Open Navigation'}
+          aria-expanded={isOpen}
+          aria-controls="mobile-drawer"
         >
-          {isOpen ? <FiX /> : <FiMenu />}
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={isOpen ? 'close' : 'open'}
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.18 }}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              {isOpen ? <FiX size={20} /> : <FiMenu size={20} />}
+            </motion.span>
+          </AnimatePresence>
         </button>
       )}
 
-      {/* Mobile Drawer Overlay & Sidebar */}
+      {/* ── Mobile Drawer Overlay & Sidebar ────────────────────────────────── */}
       <AnimatePresence>
         {isMobile && isOpen && (
           <>
@@ -129,19 +172,25 @@ const Navbar = ({ theme, toggleTheme }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
+              transition={{ duration: 0.2 }}
+              onClick={closeDrawer}
               className="mobile-drawer-backdrop"
+              aria-hidden="true"
             />
 
-            {/* Sidebar drawer panel */}
+            {/* Drawer Panel */}
             <motion.div
+              id="mobile-drawer"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 220 }}
               className="mobile-drawer"
             >
-              {/* Brand Logo inside Drawer */}
+              {/* Brand inside drawer */}
               <div style={{
                 fontFamily: 'Outfit',
                 fontWeight: 900,
@@ -156,36 +205,47 @@ const Navbar = ({ theme, toggleTheme }) => {
                 {personalInfo.name.split(' ')[0]}
               </div>
 
-              {/* Drawer Links */}
+              {/* Drawer links */}
               <ul style={{ 
                 display: 'flex', 
                 flexDirection: 'column', 
-                gap: '1.5rem', 
+                gap: '0.8rem', 
                 width: '100%',
                 flexGrow: 1
               }}>
-                {navItems.map((item) => (
+                {navItems.map((item, index) => (
                   <motion.li 
                     key={item}
-                    whileTap={{ scale: 0.96 }}
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.06, duration: 0.25 }}
+                    whileTap={{ scale: 0.97 }}
                   >
                     <a 
                       href={`#${item.toLowerCase()}`} 
-                      onClick={() => setIsOpen(false)}
+                      onClick={closeDrawer}
                       style={{ 
                         display: 'block',
-                        padding: '0.8rem 1rem',
+                        padding: '0.9rem 1rem',
                         fontWeight: 700, 
                         color: 'var(--text-secondary)', 
                         letterSpacing: '0.08em',
-                        fontSize: '1.1rem',
+                        fontSize: '1.05rem',
                         borderRadius: '12px',
                         background: 'rgba(255, 255, 255, 0.02)',
                         border: '1px solid rgba(255, 255, 255, 0.04)',
                         transition: 'all 0.2s ease'
                       }}
-                      onMouseOver={e => { e.currentTarget.style.color = '#ffffff'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)'; }}
-                      onMouseOut={e => { e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)'; }}
+                      onMouseOver={e => { 
+                        e.currentTarget.style.color = '#ffffff'; 
+                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)'; 
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                      }}
+                      onMouseOut={e => { 
+                        e.currentTarget.style.color = 'var(--text-secondary)'; 
+                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)'; 
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)';
+                      }}
                     >
                       {item}
                     </a>
@@ -193,16 +253,23 @@ const Navbar = ({ theme, toggleTheme }) => {
                 ))}
               </ul>
 
-              {/* Drawer Bottom Controls */}
+              {/* Bottom Controls */}
               <div style={{ 
                 borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-                paddingTop: '2rem',
+                paddingTop: '1.5rem',
+                marginTop: '1.5rem',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center'
               }}>
-                <span style={{ color: 'var(--text-secondary)', fontWeight: 600, fontSize: '0.9rem', letterSpacing: '0.02em' }}>
-                  THEME MODE
+                <span style={{ 
+                  color: 'var(--text-secondary)', 
+                  fontWeight: 600, 
+                  fontSize: '0.85rem', 
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase'
+                }}>
+                  Theme
                 </span>
                 <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
               </div>

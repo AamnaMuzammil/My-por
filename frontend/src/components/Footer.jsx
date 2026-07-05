@@ -37,15 +37,17 @@ const Footer = () => {
       {/* Ambient glow orbs */}
       <div style={{
         position: 'absolute', bottom: '-60px', left: '10%',
-        width: '300px', height: '300px',
+        width: 'clamp(140px, 35vw, 300px)', height: 'clamp(140px, 35vw, 300px)',
         background: 'radial-gradient(circle, rgba(255,126,179,0.08) 0%, transparent 70%)',
-        pointerEvents: 'none'
+        pointerEvents: 'none',
+        borderRadius: '50%'
       }} />
       <div style={{
         position: 'absolute', bottom: '-60px', right: '10%',
-        width: '300px', height: '300px',
+        width: 'clamp(140px, 35vw, 300px)', height: 'clamp(140px, 35vw, 300px)',
         background: 'radial-gradient(circle, rgba(0,255,213,0.06) 0%, transparent 70%)',
-        pointerEvents: 'none'
+        pointerEvents: 'none',
+        borderRadius: '50%'
       }} />
 
       <div className="container" style={{ paddingTop: '5rem', paddingBottom: '3rem' }}>
@@ -171,11 +173,8 @@ const Footer = () => {
           </motion.div>
         </div>
 
-        {/* Bottom row */}
-        <div style={{
-          display: 'flex', flexWrap: 'wrap', gap: '1rem',
-          justifyContent: 'space-between', alignItems: 'center'
-        }}>
+        {/* Bottom row — uses .footer-bottom class for responsive stacking on mobile */}
+        <div className="footer-bottom">
           <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.85rem', fontWeight: 400 }}>
             © {new Date().getFullYear()} {personalInfo.name}. Built with React & Three.js
           </p>

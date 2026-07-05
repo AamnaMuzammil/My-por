@@ -116,7 +116,7 @@ const Contact = () => {
               </div>
               <div>
                 <h4 style={{ fontSize: '0.9rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-secondary)', letterSpacing: '0.05em' }}>Email</h4>
-                <p style={{ fontSize: '1.05rem', fontWeight: 600, color: '#ffffff', marginTop: '0.2rem' }}>{personalInfo.email}</p>
+                <p className="contact-info-text" style={{ fontSize: '1.05rem', fontWeight: 600, color: '#ffffff', marginTop: '0.2rem' }}>{personalInfo.email}</p>
               </div>
             </motion.div>
 
