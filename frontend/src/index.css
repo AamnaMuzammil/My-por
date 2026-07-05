@@ -1,19 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════════════════════════════════════ */
 :root {
-  /* Premium Dark Theme Default */
-  --bg-main: transparent; /* Handled by WebGL Background */
+  --bg-main: transparent;
   --bg-secondary: rgba(13, 11, 20, 0.6);
   --bg-card: rgba(25, 20, 38, 0.4);
   --text-main: #f3f4f6;
   --text-secondary: #9ca3af;
-  
   --accent-pink: #ff7eb3;
   --accent-purple: #9d00ff;
   --accent-cyan: #00ffd5;
   --accent-gradient: linear-gradient(135deg, #ff7eb3 0%, #9d00ff 50%, #00ffd5 100%);
   --accent-border: rgba(255, 255, 255, 0.08);
-
   --nav-bg: rgba(13, 11, 20, 0.7);
   --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.5);
@@ -30,65 +30,57 @@
   --glass-border: rgba(0, 0, 0, 0.07);
 }
 
-* {
+/* ═══════════════════════════════════════════════════════════════════════════
+   GLOBAL RESET
+═══════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   BASE — fix overflow on BOTH html AND body.
-   On iOS, only overflow-x on <html> reliably prevents horizontal scrolling.
-   min-height: 100dvh uses the dynamic viewport so the iOS address bar is
-   accounted for.
-───────────────────────────────────────────────────────────────────────────── */
+/*
+  CRITICAL: overflow-x MUST be on html, not just body.
+  On iOS Safari, overflow-x: hidden on <body> alone does NOT prevent
+  horizontal scroll — only <html> reliably clips it.
+*/
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;          /* prevents iOS horizontal scroll bleed */
-  min-height: 100dvh;          /* dynamic viewport — accounts for iOS address bar */
+  overflow-x: hidden;
 }
 
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   color: var(--text-main);
   overflow-x: hidden;
+  background-color: #030206;
   transition: background-color 0.3s ease, color 0.3s ease;
-  background-color: #030206; /* Fallback */
-  /* Flex column so footer always pushes to the bottom */
+  /* flex-column so footer is always pushed to the bottom */
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
-  min-height: 100vh; /* fallback for browsers without dvh */
+  min-height: 100vh;
+  min-height: 100dvh; /* dynamic viewport — accounts for iOS address bar */
 }
 
-/* Root div must grow to push footer down */
 #root {
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-height: 100dvh;
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Outfit', sans-serif;
-}
+h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { max-width: 100%; display: block; }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+/* Eliminate 300ms touch delay */
+a, button, [role="button"] { touch-action: manipulation; }
 
-ul {
-  list-style: none;
-}
-
-/* Reduce 300ms touch-delay on all interactive elements */
-a, button, [role="button"] {
-  touch-action: manipulation;
-}
-
-/* Gradient Text */
+/* ═══════════════════════════════════════════════════════════════════════════
+   UTILITY CLASSES
+═══════════════════════════════════════════════════════════════════════════ */
 .gradient-text {
   background: var(--accent-gradient);
   -webkit-background-clip: text;
@@ -97,7 +89,6 @@ a, button, [role="button"] {
   font-weight: 800;
 }
 
-/* Glassmorphism Classes */
 .glass {
   background: var(--bg-secondary);
   backdrop-filter: blur(20px);
@@ -106,7 +97,9 @@ a, button, [role="button"] {
   box-shadow: var(--shadow-sm);
 }
 
-/* ── Premium Buttons ────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════════════════════════════════════ */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -125,106 +118,77 @@ a, button, [role="button"] {
   white-space: nowrap;
   letter-spacing: 0.02em;
   touch-action: manipulation;
+  border: none;
 }
 
-/* PRIMARY — always visible solid gradient */
 .btn-primary {
   background: linear-gradient(135deg, #ff7eb3 0%, #9d00ff 60%, #00ffd5 100%);
   color: #ffffff;
-  border: none;
   box-shadow: 0 4px 20px rgba(255, 126, 179, 0.35);
 }
-
 .btn-primary:hover {
   transform: translateY(-3px) scale(1.02);
   box-shadow: 0 12px 30px rgba(255, 126, 179, 0.5);
   filter: brightness(1.1);
 }
+.btn-primary:active { transform: translateY(-1px) scale(0.99); }
 
-.btn-primary:active {
-  transform: translateY(-1px) scale(0.99);
-}
-
-/* SECONDARY — clean glass outline */
 .btn-secondary {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.18);
   color: #ffffff;
   backdrop-filter: blur(10px);
 }
-
 .btn-secondary:hover {
   transform: translateY(-3px);
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.35);
   box-shadow: 0 8px 25px rgba(255, 255, 255, 0.08);
 }
+.btn-secondary:active { transform: translateY(-1px); }
 
-.btn-secondary:active {
-  transform: translateY(-1px);
-}
-
-/* ── Hero CTA button group: stack on very small screens ── */
+/* Hero CTA group — stacks on very small screens */
 .hero-btn-group {
   display: flex;
   gap: 1.2rem;
   flex-wrap: wrap;
 }
 
-@media (max-width: 480px) {
-  .hero-btn-group {
-    flex-direction: column;
-    width: 100%;
-  }
-  .hero-btn-group .btn {
-    width: 100%;
-    text-align: center;
-    justify-content: center;
-  }
+/* Hero avatar frame — size controlled by CSS, not JS */
+.hero-avatar-frame {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 1;
+  border-radius: 50% 50% 40% 40%;
+  background: radial-gradient(circle, rgba(157,0,255,0.15) 0%, rgba(255,126,179,0.05) 70%);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 0 40px rgba(255,255,255,0.02);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-/* ── Section Spacing ────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   LAYOUT HELPERS
+═══════════════════════════════════════════════════════════════════════════ */
 .section-padding {
   padding: 8rem 2rem;
   position: relative;
 }
 
-@media (max-width: 768px) {
-  .section-padding {
-    padding: 5rem 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .section-padding {
-    padding: 4rem 1.2rem;
-  }
-}
-
-/* ── Container ──────────────────────────────── */
 .container {
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 0 2rem;
   position: relative;
   z-index: 10;
-  /* Safety: never exceed viewport width */
-  width: 100%;
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 0 1.25rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 0 1rem;
-  }
-}
-
-/* Premium Elegant Headings */
 .premium-title {
   font-size: clamp(2rem, 6vw, 4rem);
   font-family: 'Outfit', sans-serif;
@@ -235,7 +199,6 @@ a, button, [role="button"] {
   position: relative;
   display: inline-block;
 }
-
 .premium-title::after {
   content: '';
   position: absolute;
@@ -248,42 +211,227 @@ a, button, [role="button"] {
   border-radius: 2px;
 }
 
-/* Neon Glow Effect on Hover */
-.neon-glow {
-  transition: all 0.3s ease;
-}
-
+.neon-glow { transition: all 0.3s ease; }
 .neon-glow:hover {
   text-shadow: 0 0 20px rgba(255, 126, 179, 0.6), 0 0 40px rgba(157, 0, 255, 0.4);
 }
 
-/* ── Lenis Smooth Scrolling ────────────────── */
-html.lenis, html.lenis body {
-  height: auto;
+/* Word-wrap for long emails / addresses */
+.contact-info-text {
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
+/* ═══════════════════════════════════════════════════════════════════════════
+   LENIS SMOOTH SCROLL
+═══════════════════════════════════════════════════════════════════════════ */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESKTOP NAVBAR
+   Shown on > 768px, hidden on ≤ 768px via media query below.
+   Using CSS — NOT JS — so it's instant and never flashes wrong layout.
+═══════════════════════════════════════════════════════════════════════════ */
+.nav-desktop-wrapper {
+  position: fixed;
+  top: 1rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 100;
+  padding: 0 1rem;
+  pointer-events: none; /* let clicks fall through the wrapper */
 }
 
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
+.nav-desktop-pill {
+  width: 100%;
+  max-width: 1100px;
+  padding: 0.8rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50px;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  pointer-events: all; /* re-enable on the pill itself */
 }
 
-.lenis.lenis-stopped {
-  overflow: hidden;
+.nav-logo {
+  font-weight: 800;
+  font-size: 1.4rem;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  user-select: none;
 }
 
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
+.nav-logo-dot {
+  color: var(--accent-pink);
+  font-size: 1rem;
 }
 
-/* ── Responsive Grids & Layouts ────────────── */
-/*
-  Using min(Xpx, 100%) inside minmax() ensures the column never forces 
-  content wider than the parent, which was causing horizontal overflow 
-  on 360px screens with the old minmax(320px, 1fr).
-*/
+.nav-links {
+  display: flex;
+  gap: 1.8rem;
+  align-items: center;
+}
+
+.nav-link {
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+  transition: color 0.2s ease;
+}
+.nav-link:hover { color: #ffffff; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE HAMBURGER BUTTON
+   Hidden on > 768px, shown on ≤ 768px via media query below.
+═══════════════════════════════════════════════════════════════════════════ */
+.mobile-drawer-btn {
+  position: fixed;
+  top: 1.2rem;
+  right: 1.2rem;
+  /* Respect iOS notch / Dynamic Island */
+  top: calc(1.2rem + env(safe-area-inset-top, 0px));
+  right: calc(1.2rem + env(safe-area-inset-right, 0px));
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(20, 16, 32, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  display: flex;             /* default: shown on mobile */
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  z-index: 300;              /* highest — always above everything */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  touch-action: manipulation;
+}
+.mobile-drawer-btn:hover,
+.mobile-drawer-btn:focus-visible {
+  background: rgba(20, 16, 32, 1);
+  border-color: rgba(255, 126, 179, 0.45);
+  box-shadow: 0 4px 24px rgba(255, 126, 179, 0.25);
+  outline: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE DRAWER + BACKDROP
+═══════════════════════════════════════════════════════════════════════════ */
+.mobile-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  height: 100dvh;
+  height: 100vh; /* fallback */
+  background: rgba(3, 2, 6, 0.75);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 200;
+}
+
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(300px, 88vw);   /* never wider than 88vw on tiny screens */
+  height: 100dvh;
+  height: 100vh;             /* fallback */
+  background: rgba(8, 6, 16, 0.99);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 250;
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem 1.8rem 2rem;
+  /* iOS safe areas */
+  padding-top: calc(2.5rem + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+  padding-right: calc(1.8rem + env(safe-area-inset-right, 0px));
+  box-shadow: -12px 0 48px rgba(0, 0, 0, 0.8);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.drawer-brand {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 900;
+  font-size: 1.7rem;
+  color: #fff;
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+}
+
+.drawer-link {
+  display: block;
+  padding: 1rem 1.2rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+}
+.drawer-link:hover,
+.drawer-link:focus {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.drawer-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.drawer-footer-label {
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE GRIDS
+   Using min(Xpx, 100%) inside minmax() so the column NEVER forces
+   content wider than its parent. Old minmax(320px, 1fr) caused overflow.
+═══════════════════════════════════════════════════════════════════════════ */
 .hero-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
@@ -306,38 +454,9 @@ html.lenis, html.lenis body {
   align-items: center;
 }
 
-@media (max-width: 768px) {
-  .hero-grid {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-    text-align: center;
-  }
-  .hero-grid > div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .projects-grid {
-    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
-    gap: 1.5rem;
-  }
-  .contact-grid {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .projects-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  .contact-grid {
-    gap: 1.5rem;
-  }
-}
-
-/* ── Journey Cards (About Section) ────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ABOUT SECTION CARDS
+═══════════════════════════════════════════════════════════════════════════ */
 .about-header {
   display: flex;
   flex-wrap: wrap;
@@ -345,14 +464,12 @@ html.lenis, html.lenis body {
   margin-bottom: 5rem;
   align-items: flex-start;
 }
-
 .about-header-left {
-  flex: 1 1 200px;    /* was 250px; now collapses sooner */
-  min-width: 0;       /* prevents flex blowout */
+  flex: 1 1 200px;
+  min-width: 0;
 }
-
 .about-header-right {
-  flex: 2 1 300px;    /* was 500px; now collapses at ~300px instead of 500px */
+  flex: 2 1 300px;
   min-width: 0;
 }
 
@@ -376,12 +493,10 @@ html.lenis, html.lenis body {
   transition: all 0.3s ease;
   position: relative;
 }
-
 .journey-card-content {
-  flex: 1 1 280px;    /* was 600px — caused overflow on tablet */
+  flex: 1 1 280px;
   min-width: 0;
 }
-
 .journey-card-arrow {
   width: 50px;
   height: 50px;
@@ -397,7 +512,102 @@ html.lenis, html.lenis body {
   flex-shrink: 0;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   CONTACT FORM
+═══════════════════════════════════════════════════════════════════════════ */
+.contact-form-container {
+  padding: 3rem 2.5rem;
+  border-radius: 20px;
+  background: rgba(25, 20, 38, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  position: relative;
+  min-width: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════════════════════════ */
+.footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 4rem;
+}
+
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-bottom p {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ██████████████████████████████████████████████████████████████████████████
+   MEDIA QUERIES
+   ██████████████████████████████████████████████████════════════════════════
+═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── > 768px : Hide hamburger, show desktop pill nav ──────────────────── */
+@media (min-width: 769px) {
+  .mobile-drawer-btn {
+    display: none !important;
+  }
+  .nav-desktop-wrapper {
+    display: flex;
+  }
+}
+
+/* ── ≤ 768px : Hide desktop pill nav, show hamburger ─────────────────── */
 @media (max-width: 768px) {
+  .nav-desktop-wrapper {
+    display: none !important;
+  }
+  .mobile-drawer-btn {
+    display: flex !important;
+  }
+
+  .section-padding { padding: 5rem 1.5rem; }
+  .container { padding: 0 1.25rem; }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    text-align: center;
+  }
+  .hero-grid > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero-avatar-frame {
+    max-width: 240px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+    gap: 1.5rem;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
   .about-header {
     gap: 1.5rem;
     margin-bottom: 3rem;
@@ -412,180 +622,59 @@ html.lenis, html.lenis body {
     flex: 1 1 100%;
     width: 100%;
   }
-  .journey-card-content p {
-    max-width: 100% !important;
+  .journey-card-content p { max-width: 100% !important; }
+  .journey-card-arrow { align-self: flex-end; }
+
+  .contact-form-container { padding: 2rem 1.5rem; }
+
+  .footer-row {
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
   }
-  .journey-card-arrow {
-    align-self: flex-end;
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
   }
 }
 
+/* ── ≤ 480px : Extra-small phones (360–480px) ─────────────────────────── */
 @media (max-width: 480px) {
+  .section-padding { padding: 4rem 1rem; }
+  .container { padding: 0 1rem; }
+
+  .hero-btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  .hero-btn-group .btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    padding: 0.9rem 1.5rem;
+  }
+
+  .projects-grid { grid-template-columns: 1fr; }
+  .contact-grid { gap: 1.5rem; }
+
   .about-header {
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1rem;
     margin-bottom: 2rem;
   }
   .about-header-left,
   .about-header-right {
     flex: 1 1 100%;
   }
-  .journey-card {
-    padding: 1.2rem;
-  }
-}
+  .journey-card { padding: 1.2rem; }
 
-/* ── Contact Form Container ────────────────── */
-.contact-form-container {
-  padding: 3rem 2.5rem;
-  border-radius: 20px;
-  background: rgba(25, 20, 38, 0.45);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-  position: relative;
-  min-width: 0; /* prevent flex/grid blowout */
-}
-
-@media (max-width: 768px) {
-  .contact-form-container {
-    padding: 2rem 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
   .contact-form-container {
     padding: 1.5rem 1rem;
     border-radius: 14px;
   }
-}
 
-/* Contact info text: wrap long email addresses */
-.contact-info-text {
-  word-break: break-all;
-  overflow-wrap: break-word;
-}
-
-/* ── Mobile Sidebar Drawer & Button ────────── */
-.mobile-drawer-btn {
-  position: fixed;
-  top: 1.2rem;
-  right: 1.2rem;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: rgba(20, 16, 32, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  font-size: 1.3rem;
-  cursor: pointer;
-  z-index: 200;          /* above everything */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 126, 179, 0.08);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  /* Respect iOS safe area (notch / home indicator) */
-  top: calc(1.2rem + env(safe-area-inset-top));
-  right: calc(1.2rem + env(safe-area-inset-right));
-  touch-action: manipulation;
-}
-
-.mobile-drawer-btn:hover,
-.mobile-drawer-btn:focus-visible {
-  background: rgba(20, 16, 32, 0.95);
-  border-color: rgba(255, 126, 179, 0.4);
-  box-shadow: 0 4px 20px rgba(255, 126, 179, 0.2);
-  outline: none;
-}
-
-.mobile-drawer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: min(280px, 85vw);   /* never wider than 85% of viewport */
-  /* dvh so the drawer fills the full visual viewport on iOS */
-  height: 100dvh;
-  height: 100vh;             /* fallback */
-  background: rgba(10, 8, 16, 0.98);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-  z-index: 150;              /* above backdrop (100) and below hamburger (200) */
-  display: flex;
-  flex-direction: column;
-  padding: 2.5rem 1.8rem;
-  /* Respect iOS safe areas */
-  padding-top: calc(2.5rem + env(safe-area-inset-top));
-  padding-bottom: calc(1.8rem + env(safe-area-inset-bottom));
-  padding-right: calc(1.8rem + env(safe-area-inset-right));
-  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.7);
-  overflow-y: auto;          /* in case content is taller than screen */
-  -webkit-overflow-scrolling: touch;
-}
-
-.mobile-drawer-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(3, 2, 6, 0.7);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: 140;              /* below drawer (150), above content */
-  /* full height including iOS dynamic bar */
-  height: 100dvh;
-  height: 100vh;
-}
-
-/* ── Footer Row Responsive Wrapper ────────── */
-.footer-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3rem;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 4rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  padding-bottom: 4rem;
-}
-
-/* Footer bottom bar: copyright + scroll-to-top */
-.footer-bottom {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.footer-bottom p {
-  word-break: break-word;
-  overflow-wrap: break-word;
-  min-width: 0;
-}
-
-@media (max-width: 768px) {
-  .footer-row {
-    flex-direction: column;
-    gap: 2.5rem;
-    margin-bottom: 3rem;
-    padding-bottom: 3rem;
-  }
-  .footer-bottom {
-    flex-direction: column;
-    align-items: center;
-    gap: 1.2rem;
-    text-align: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .footer-row {
-    gap: 2rem;
-    margin-bottom: 2rem;
-    padding-bottom: 2rem;
-  }
+  .footer-row { gap: 1.5rem; }
 }
